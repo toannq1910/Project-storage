@@ -30,3 +30,25 @@
 
       alert('Đăng nhập demo thành công!');
     });
+
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  const foundUser = users.find(user =>
+    user.email === email && user.password === password
+  );
+
+  if (!foundUser) {
+    alert("Sai email hoặc mật khẩu!");
+    return;
+  }
+
+  // Lưu session
+  localStorage.setItem("currentUser", JSON.stringify(foundUser));
+
+  // Chuyển sang dashboard
+  window.location.href = "dashboard.html";
+});
