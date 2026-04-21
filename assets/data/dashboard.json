@@ -1,0 +1,45 @@
+{
+  "home": {
+    "title": "Dashboard Tổng Quan",
+    "cards": [
+      {
+        "title": "API Platforms",
+        "value": "36+",
+        "description": "Tổng số API tích hợp"
+      },
+      {
+        "title": "CRM/ERP Providers",
+        "value": "12+",
+        "description": "Đối tác tích hợp"
+      },
+      {
+        "title": "CRM Market VN",
+        "value": "320M$",
+        "description": "Quy mô thị trường"
+      }
+    ]
+  },
+
+  "market": {
+    "title": "Thị Trường Việt Nam",
+    "cards": [
+      {
+        "title": "Tăng trưởng CRM",
+        "value": "18%",
+        "description": "YoY Growth 2025"
+      }
+    ]
+  },
+
+  "admin": {
+    "title": "Quản Trị Hệ Thống",
+    "roles": ["Administrator"],
+    "cards": [
+      {
+        "title": "User Management",
+        "value": "8 Users",
+        "description": "Tổng người dùng"
+      }
+    ]
+  }
+}
