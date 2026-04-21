@@ -22,11 +22,12 @@
   <div class="sidebar">
     <h2>FTI Presales Hub</h2>
 
-    <ul>
-      <li>Dashboard Tổng Quan</li>
-      <li>Thị Trường VN</li>
-      <li>Stakeholder × Ngành</li>
-      <li>Phân Tích Đối Thủ</li>
+    <ul id="menu">
+      <li data-page="home">Dashboard Tổng Quan</li>
+      <li data-page="market">Thị Trường VN</li>
+      <li data-page="stakeholder">Stakeholder × Ngành</li>
+      <li data-page="competitor">Phân Tích Đối Thủ</li>
+      <li id="adminMenu" data-page="admin" style="display:none;">Quản Trị Hệ Thống</li>
     </ul>
 
     <div class="user-box">
@@ -37,32 +38,19 @@
   <!-- MAIN -->
   <div class="main">
 
-    <!-- HEADER -->
     <div class="topbar">
-      <h3>Dashboard</h3>
+      <h3 id="pageTitle">Dashboard</h3>
+
+      <input type="text" id="searchInput" placeholder="Tìm kiếm..." />
+
       <div>
         <span id="headerUser"></span>
         <button onclick="logout()">Đăng xuất</button>
       </div>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-      <div class="card">
-        <h3>36+</h3>
-        <p>API Platforms</p>
-      </div>
-
-      <div class="card">
-        <h3>12+</h3>
-        <p>CRM/ERP Providers</p>
-      </div>
-
-      <div class="card">
-        <h3>320M$</h3>
-        <p>CRM Market VN</p>
-      </div>
-    </div>
+    <!-- CONTENT AREA -->
+    <div class="content" id="contentArea"></div>
 
   </div>
 </div>
