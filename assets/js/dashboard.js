@@ -12,24 +12,34 @@ document.getElementById("headerUser").innerText =
 
 let dashboardData = {};
 
+// 🔥 LOADING SKELETON NGAY KHI LOAD
+document.getElementById("contentArea").innerHTML = `
+  <div class="skeleton"></div>
+  <div class="skeleton"></div>
+`;
+
 // Load JSON
 fetch("./assets/data/dashboard.json")
   .then(res => res.json())
   .then(data => {
     dashboardData = data;
-    init();
+
+    // delay nhẹ cho hiệu ứng mượt
+    setTimeout(() => {
+      init();
+    }, 500);
   })
   .catch(err => {
     console.error("Lỗi load JSON:", err);
   });
 
-// Khởi tạo
+// INIT
 function init() {
   setupMenu();
   loadPageFromHash();
 }
 
-// Click menu
+// MENU CLICK
 function setupMenu() {
   document.querySelectorAll("#menu li").forEach(item => {
     item.addEventListener("click", () => {
@@ -39,7 +49,7 @@ function setupMenu() {
   });
 }
 
-// Routing
+// ROUTING
 window.addEventListener("hashchange", loadPageFromHash);
 
 function loadPageFromHash() {
@@ -47,31 +57,31 @@ function loadPageFromHash() {
   renderPage(page);
 }
 
-// Render nội dung
+// RENDER PAGE
 function renderPage(page) {
   const content = document.getElementById("contentArea");
   const title = document.getElementById("pageTitle");
 
   const pageData = dashboardData[page];
-  if (page === "admin") {
-  renderUserTable();
-  return;
-  }
+
   if (!pageData) {
     content.innerHTML = "<p>Không có dữ liệu</p>";
     return;
   }
-// Highlight menu active
-document.querySelectorAll("#menu li").forEach(li => {
-  li.classList.remove("active");
-  if (li.getAttribute("data-page") === page) {
-    li.classList.add("active");
-  }
-});
+
   title.innerText = pageData.title;
 
-  // Render cards
-  let html = "";
+  // 🔥 SIDEBAR ACTIVE
+  document.querySelectorAll("#menu li").forEach(li => {
+    li.classList.remove("active");
+    if (li.getAttribute("data-page") === page) {
+      li.classList.add("active");
+    }
+  });
+
+  // RENDER CARD
+  let html = `<div class="card-container">`;
+
   pageData.cards.forEach(card => {
     html += `
       <div class="card">
@@ -82,10 +92,12 @@ document.querySelectorAll("#menu li").forEach(li => {
     `;
   });
 
-  // Nếu có chart → thêm canvas
+  html += `</div>`;
+
+  // 🔥 CHART
   if (pageData.chart) {
     html += `
-      <div style="width:600px;margin-top:40px;">
+      <div class="chart-box">
         <canvas id="chart"></canvas>
       </div>
     `;
@@ -93,10 +105,14 @@ document.querySelectorAll("#menu li").forEach(li => {
 
   content.innerHTML = html;
 
-  // Vẽ chart SAU khi render xong
+  // 🔥 VẼ CHART PRO
   if (pageData.chart) {
     setTimeout(() => {
       const ctx = document.getElementById("chart");
+
+      const gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 300);
+      gradient.addColorStop(0, "rgba(96,165,250,0.4)");
+      gradient.addColorStop(1, "rgba(96,165,250,0)");
 
       new Chart(ctx, {
         type: "line",
@@ -106,70 +122,41 @@ document.querySelectorAll("#menu li").forEach(li => {
             label: "Market Size (M$)",
             data: pageData.chart.data,
             borderColor: "#60a5fa",
-            backgroundColor: "rgba(96,165,250,0.2)",
-            tension: 0.4
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            pointBackgroundColor: "#60a5fa"
           }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: "#cbd5f5"
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "#94a3b8" },
+              grid: { color: "rgba(255,255,255,0.05)" }
+            },
+            y: {
+              ticks: { color: "#94a3b8" },
+              grid: { color: "rgba(255,255,255,0.05)" }
+            }
+          }
         }
       });
     }, 50);
   }
-  function renderUserTable() {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-
-  let html = `
-    <h3>Danh sách User</h3>
-    <button onclick="addUser()">+ Thêm User</button>
-    <table border="1" cellpadding="8">
-      <tr>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Action</th>
-      </tr>
-  `;
-
-  users.forEach((u, index) => {
-    html += `
-      <tr>
-        <td>${u.email}</td>
-        <td>${u.role}</td>
-        <td>
-          <button onclick="deleteUser(${index})">Xóa</button>
-        </td>
-      </tr>
-    `;
-  });
-
-  html += "</table>";
-
-  document.getElementById("contentArea").innerHTML = html;
-}
 }
 
-//Add / Delete function
-function addUser() {
-  const email = prompt("Nhập email:");
-  const role = prompt("Nhập role:");
-
-  if (!email || !role) return;
-
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  users.push({ email, role });
-  localStorage.setItem("users", JSON.stringify(users));
-  renderUserTable();
-}
-
-function deleteUser(index) {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  users.splice(index, 1);
-  localStorage.setItem("users", JSON.stringify(users));
-  renderUserTable();
-}
-
-// Logout
+// LOGOUT
 function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
-}
-function toggleSidebar() {
-  document.querySelector(".sidebar").classList.toggle("collapsed");
 }
