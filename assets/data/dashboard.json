@@ -21,19 +21,19 @@
   },
 
   "market": {
-  "title": "Thị Trường Việt Nam",
-  "cards": [
-    {
-      "title": "Tăng trưởng CRM",
-      "value": "18%",
-      "description": "YoY Growth 2025"
+    "title": "Thị Trường Việt Nam",
+    "cards": [
+      {
+        "title": "Tăng trưởng CRM",
+        "value": "18%",
+        "description": "YoY Growth 2025"
+      }
+    ],
+    "chart": {
+      "labels": ["2021", "2022", "2023", "2024", "2025"],
+      "data": [120, 150, 210, 260, 320]
     }
-  ],
-  "chart": {
-    "labels": ["2021", "2022", "2023", "2024", "2025"],
-    "data": [120, 150, 210, 260, 320]
-  }
-}
+  },
 
   "admin": {
     "title": "Quản Trị Hệ Thống",
@@ -42,7 +42,7 @@
       {
         "title": "User Management",
         "value": "8 Users",
-        "description": "Tổng người dùng"
+        "description": "Quản lý người dùng"
       }
     ]
   }
