@@ -1,82 +1,23 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FTI Hub - Dashboard chuyên nghiệp</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <div class="layout">
-        <div class="sidebar">
-            <div class="logo">
-                <i class="fa-solid fa-layer-group"></i>
-                <h2>FTI Hub</h2>
-            </div>
-            <ul id="menu">
-                <li class="active" data-page="home"><i class="fa-solid fa-chart-line"></i> Dashboard</li>
-                <li data-page="market"><i class="fa-solid fa-chart-area"></i> Thị Trường</li>
-                <li data-page="stakeholder"><i class="fa-solid fa-users"></i> Stakeholder</li>
-                <li data-page="competitor"><i class="fa-solid fa-bolt"></i> Đối Thủ</li>
-                <li data-page="admin"><i class="fa-solid fa-user-shield"></i> Admin</li>
-            </ul>
-            <div class="user-box">
-                <div class="user-info">
-                    <p id="sidebarUser">Guest User</p>
-                    <small>Standard Member</small>
-                </div>
-            </div>
-        </div>
+<meta charset="UTF-8">
+<title>Dashboard SaaS</title>
 
-        <div class="main">
-            <div class="topbar">
-                <h3 id="pageTitle">Dashboard Tổng Quan</h3>
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm dữ liệu...">
-                </div>
-                <div class="user-actions">
-                    <span id="headerUser">user@fti.com.vn</span>
-                    <button class="btn-logout" onclick="alert('Đã đăng xuất')"><i class="fa-solid fa-right-from-bracket"></i></button>
-                </div>
-            </div>
+<link rel="stylesheet" href="assets/css/dashboard.css">
 
-            <div class="content" id="contentArea">
-                <div class="loading-spinner">Đang tải dữ liệu...</div>
-            </div>
-        </div>
-    </div>
-    <script src="dashboard.js"></script>
-</body>
-</html>
+<!-- ICON -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- 
-	<!DOCTYPE html>
-	<html lang="vi">
-	<head>
-	<meta charset="UTF-8">
-	<title>Dashboard SaaS</title>
-
-	<link rel="stylesheet" href="assets/css/dashboard.css">
-
-	<!-- ICON -->
-<!--
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-	<!-- CHART LOCAL -->
-<!--
+<!-- CHART LOCAL -->
 <script src="assets/js/chart.js"></script>
 
 </head>
 <body>
 
 <div class="layout">
--->
 
   <!-- SIDEBAR -->
-  <!--
   <div class="sidebar">
     <h2>FTI Hub</h2>
 
@@ -92,9 +33,8 @@
       <p id="sidebarUser"></p>
     </div>
   </div>
--->
+
   <!-- MAIN -->
-  <!--
   <div class="main">
     <div class="topbar">
       <h3 id="pageTitle">Dashboard</h3>
@@ -113,9 +53,8 @@
     </div>
   </div>
 </div>
--->
+
 <!-- MODAL -->
-<!--
 <div id="userModal" class="modal">
   <div class="modal-content">
     <h3>Thêm User</h3>
@@ -130,4 +69,3 @@
 
 </body>
 </html>
--->
