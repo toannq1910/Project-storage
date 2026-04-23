@@ -2,11 +2,14 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>Dashboard SaaS</title>
 
 <link rel="stylesheet" href="assets/css/dashboard.css">
 
-<!-- Chart.js -->
+<!-- ICON -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- CHART LOCAL -->
 <script src="assets/js/chart.js"></script>
 
 </head>
@@ -16,16 +19,14 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-  <h2>FTI Hub</h2>
-  <button onclick="toggleSidebar()" style="background:none;border:none;color:white;cursor:pointer;">☰</button>
-    </div>
+    <h2>FTI Hub</h2>
 
     <ul id="menu">
-      <li data-page="home">Dashboard Tổng Quan</li>
-      <li data-page="market">Thị Trường VN</li>
-      <li data-page="stakeholder">Stakeholder × Ngành</li>
-      <li data-page="competitor">Phân Tích Đối Thủ</li>
+      <li data-page="home"><i class="fa-solid fa-chart-line"></i> Dashboard</li>
+      <li data-page="market"><i class="fa-solid fa-chart-area"></i> Thị Trường</li>
+      <li data-page="stakeholder"><i class="fa-solid fa-users"></i> Stakeholder</li>
+      <li data-page="competitor"><i class="fa-solid fa-bolt"></i> Đối Thủ</li>
+      <li data-page="admin"><i class="fa-solid fa-user-shield"></i> Admin</li>
     </ul>
 
     <div class="user-box">
@@ -35,7 +36,6 @@
 
   <!-- MAIN -->
   <div class="main">
-
     <div class="topbar">
       <h3 id="pageTitle">Dashboard</h3>
 
@@ -47,8 +47,21 @@
       </div>
     </div>
 
-    <div class="content" id="contentArea"></div>
+    <div class="content" id="contentArea">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+  </div>
+</div>
 
+<!-- MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <h3>Thêm User</h3>
+    <input id="newEmail" placeholder="Email">
+    <input id="newRole" placeholder="Role">
+    <button onclick="saveUser()">Lưu</button>
+    <button onclick="closeModal()">Đóng</button>
   </div>
 </div>
 
