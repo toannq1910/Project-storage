@@ -61,7 +61,13 @@ function renderPage(page) {
     content.innerHTML = "<p>Không có dữ liệu</p>";
     return;
   }
-
+// Highlight menu active
+document.querySelectorAll("#menu li").forEach(li => {
+  li.classList.remove("active");
+  if (li.getAttribute("data-page") === page) {
+    li.classList.add("active");
+  }
+});
   title.innerText = pageData.title;
 
   // Render cards
