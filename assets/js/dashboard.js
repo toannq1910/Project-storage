@@ -45,6 +45,31 @@ function renderPage(page) {
       </div>
     `;
   });
+  // Nếu có chart thì vẽ
+if (pageData.chart) {
+  content.innerHTML += `
+    <div style="width:600px;margin-top:40px;">
+      <canvas id="myChart"></canvas>
+    </div>
+  `;
+
+  setTimeout(() => {
+    const ctx = document.getElementById("myChart");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: pageData.chart.labels,
+        datasets: [{
+          label: "Market Size (M$)",
+          data: pageData.chart.data,
+          borderColor: "#60a5fa",
+          backgroundColor: "rgba(96,165,250,0.2)",
+          tension: 0.4
+        }]
+      }
+    });
+  }, 100);
+}
 }
 
 function initRouting() {
