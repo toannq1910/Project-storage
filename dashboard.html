@@ -5,16 +5,12 @@
 <title>Dashboard</title>
 
 <link rel="stylesheet" href="assets/css/dashboard.css">
+
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
-
-<script>
-  const user = JSON.parse(localStorage.getItem("currentUser"));
-  if (!user) {
-    window.location.href = "index.html";
-  }
-</script>
 
 <div class="layout">
 
@@ -27,7 +23,6 @@
       <li data-page="market">Thị Trường VN</li>
       <li data-page="stakeholder">Stakeholder × Ngành</li>
       <li data-page="competitor">Phân Tích Đối Thủ</li>
-      <li id="adminMenu" data-page="admin" style="display:none;">Quản Trị Hệ Thống</li>
     </ul>
 
     <div class="user-box">
@@ -49,7 +44,6 @@
       </div>
     </div>
 
-    <!-- CONTENT AREA -->
     <div class="content" id="contentArea"></div>
 
   </div>
