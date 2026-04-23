@@ -83,3 +83,13 @@ body {
   margin: 0;
   color: #60a5fa;
 }
+.sidebar.collapsed {
+  width: 70px;
+  transition: 0.3s;
+}
+
+.sidebar.collapsed li,
+.sidebar.collapsed h2,
+.sidebar.collapsed .user-box {
+  display: none;
+}
