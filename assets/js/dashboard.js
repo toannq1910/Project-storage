@@ -104,6 +104,36 @@ function renderPage(page) {
       });
     }, 50);
   }
+  function renderUserTable() {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let html = `
+    <h3>Danh sách User</h3>
+    <button onclick="addUser()">+ Thêm User</button>
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+  `;
+
+  users.forEach((u, index) => {
+    html += `
+      <tr>
+        <td>${u.email}</td>
+        <td>${u.role}</td>
+        <td>
+          <button onclick="deleteUser(${index})">Xóa</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += "</table>";
+
+  document.getElementById("contentArea").innerHTML = html;
+}
 }
 
 // Logout
