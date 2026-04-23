@@ -1,161 +1,167 @@
+// ====== AUTH CHECK ======
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser) window.location.href = "index.html";
 
-if (!currentUser) {
-  window.location.href = "index.html";
-}
-
-// Hiển thị user
+// ====== HIỂN THỊ USER ======
 document.getElementById("sidebarUser").innerText =
   currentUser.name + " (" + currentUser.role + ")";
 document.getElementById("headerUser").innerText =
   currentUser.email;
 
+// ====== GLOBAL ======
 let dashboardData = {};
+let currentPage = "home";
 
-// 🔥 LOADING SKELETON NGAY KHI LOAD
-document.getElementById("contentArea").innerHTML = `
-  <div class="skeleton"></div>
-  <div class="skeleton"></div>
-`;
-
-// Load JSON
+// ====== LOAD JSON + LOADING ======
 fetch("./assets/data/dashboard.json")
   .then(res => res.json())
   .then(data => {
     dashboardData = data;
-
-    // delay nhẹ cho hiệu ứng mượt
-    setTimeout(() => {
-      init();
-    }, 500);
-  })
-  .catch(err => {
-    console.error("Lỗi load JSON:", err);
+    init();
   });
 
-// INIT
+// ====== INIT ======
 function init() {
   setupMenu();
-  loadPageFromHash();
+  loadPage();
 }
 
-// MENU CLICK
+// ====== MENU CLICK ======
 function setupMenu() {
-  document.querySelectorAll("#menu li").forEach(item => {
-    item.addEventListener("click", () => {
-      const page = item.getAttribute("data-page");
-      window.location.hash = page;
-    });
+  document.querySelectorAll("#menu li").forEach(li => {
+    li.onclick = () => {
+      window.location.hash = li.dataset.page;
+    };
   });
 }
 
-// ROUTING
-window.addEventListener("hashchange", loadPageFromHash);
+// ====== ROUTING ======
+window.addEventListener("hashchange", loadPage);
 
-function loadPageFromHash() {
-  const page = window.location.hash.replace("#", "") || "home";
+function loadPage() {
+  const page = location.hash.replace("#", "") || "home";
+  currentPage = page;
   renderPage(page);
 }
 
-// RENDER PAGE
+// ====== RENDER PAGE ======
 function renderPage(page) {
   const content = document.getElementById("contentArea");
   const title = document.getElementById("pageTitle");
 
   const pageData = dashboardData[page];
-
-  if (!pageData) {
-    content.innerHTML = "<p>Không có dữ liệu</p>";
-    return;
-  }
+  if (!pageData) return;
 
   title.innerText = pageData.title;
 
-  // 🔥 SIDEBAR ACTIVE
+  // highlight sidebar
   document.querySelectorAll("#menu li").forEach(li => {
     li.classList.remove("active");
-    if (li.getAttribute("data-page") === page) {
-      li.classList.add("active");
-    }
+    if (li.dataset.page === page) li.classList.add("active");
   });
 
-  // RENDER CARD
-  let html = `<div class="card-container">`;
+  // ADMIN PAGE
+  if (page === "admin") {
+    renderUserTable();
+    return;
+  }
 
-  pageData.cards.forEach(card => {
+  // render cards
+  let html = `<div class="card-container">`;
+  pageData.cards.forEach(c => {
     html += `
       <div class="card">
-        <h3>${card.value}</h3>
-        <p><strong>${card.title}</strong></p>
-        <small>${card.description}</small>
+        <h3>${c.value}</h3>
+        <p>${c.title}</p>
+        <small>${c.description}</small>
       </div>
     `;
   });
-
   html += `</div>`;
 
-  // 🔥 CHART
+  // render chart
   if (pageData.chart) {
-    html += `
-      <div class="chart-box">
-        <canvas id="chart"></canvas>
-      </div>
-    `;
+    html += `<div class="chart-box"><canvas id="chart"></canvas></div>`;
   }
 
   content.innerHTML = html;
 
-  // 🔥 VẼ CHART PRO
+  // ====== CHART ======
   if (pageData.chart) {
-    setTimeout(() => {
-      const ctx = document.getElementById("chart");
+    const ctx = document.getElementById("chart");
 
-      const gradient = ctx.getContext("2d").createLinearGradient(0, 0, 0, 300);
-      gradient.addColorStop(0, "rgba(96,165,250,0.4)");
-      gradient.addColorStop(1, "rgba(96,165,250,0)");
+    const gradient = ctx.getContext("2d").createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,"rgba(96,165,250,0.4)");
+    gradient.addColorStop(1,"rgba(96,165,250,0)");
 
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: pageData.chart.labels,
-          datasets: [{
-            label: "Market Size (M$)",
-            data: pageData.chart.data,
-            borderColor: "#60a5fa",
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            pointBackgroundColor: "#60a5fa"
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: {
-                color: "#cbd5f5"
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "#94a3b8" },
-              grid: { color: "rgba(255,255,255,0.05)" }
-            },
-            y: {
-              ticks: { color: "#94a3b8" },
-              grid: { color: "rgba(255,255,255,0.05)" }
-            }
-          }
-        }
-      });
-    }, 50);
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: pageData.chart.labels,
+        datasets: [{
+          data: pageData.chart.data,
+          borderColor: "#60a5fa",
+          backgroundColor: gradient,
+          fill: true
+        }]
+      }
+    });
   }
 }
 
-// LOGOUT
+// ====== SEARCH ======
+document.getElementById("searchInput").addEventListener("input", function () {
+  const keyword = this.value.toLowerCase();
+  const pageData = dashboardData[currentPage];
+  const content = document.getElementById("contentArea");
+
+  let html = `<div class="card-container">`;
+  pageData.cards
+    .filter(c => c.title.toLowerCase().includes(keyword))
+    .forEach(c => {
+      html += `<div class="card"><h3>${c.value}</h3><p>${c.title}</p></div>`;
+    });
+  html += `</div>`;
+
+  content.innerHTML = html;
+});
+
+// ====== MODAL ======
+function openModal() {
+  document.getElementById("userModal").style.display = "block";
+}
+function closeModal() {
+  document.getElementById("userModal").style.display = "none";
+}
+
+// ====== CRUD USER ======
+function saveUser() {
+  const email = document.getElementById("newEmail").value;
+  const role = document.getElementById("newRole").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push({ email, role });
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  closeModal();
+  renderUserTable();
+}
+
+function renderUserTable() {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const content = document.getElementById("contentArea");
+
+  let html = `<button onclick="openModal()">+ Add</button><table>`;
+  users.forEach(u => {
+    html += `<tr><td>${u.email}</td><td>${u.role}</td></tr>`;
+  });
+  html += `</table>`;
+
+  content.innerHTML = html;
+}
+
+// ====== LOGOUT ======
 function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
