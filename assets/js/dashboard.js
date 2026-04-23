@@ -111,3 +111,6 @@ function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
 }
+function toggleSidebar() {
+  document.querySelector(".sidebar").classList.toggle("collapsed");
+}
