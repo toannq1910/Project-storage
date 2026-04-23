@@ -70,6 +70,7 @@ if (pageData.chart) {
     });
   }, 100);
 }
+}
 
 function initRouting() {
   document.querySelectorAll("#menu li").forEach(item => {
