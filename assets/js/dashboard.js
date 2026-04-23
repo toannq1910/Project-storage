@@ -1,168 +1,107 @@
-// ====== AUTH CHECK ======
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-if (!currentUser) window.location.href = "index.html";
+// ====== DỮ LIỆU DỰ PHÒNG (Nếu không load được file JSON) ======
+const fallbackData = {
+    "home": {
+        "title": "Dashboard Tổng Quan",
+        "cards": [
+            {"title": "API Platforms", "value": "36+", "desc": "Tăng 12% tháng này"},
+            {"title": "CRM Providers", "value": "12+", "desc": "Đang hoạt động"},
+            {"title": "Market Scale", "value": "$320M", "desc": "Quy mô VN"}
+        ]
+    },
+    "market": {
+        "title": "Phân Tích Thị Trường",
+        "cards": [
+            {"title": "Tăng trưởng", "value": "18%", "desc": "Năm 2025"}
+        ],
+        "chart": {
+            "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            "data": [12, 19, 15, 25, 22, 30]
+        }
+    }
+};
 
-// ====== HIỂN THỊ USER ======
-document.getElementById("sidebarUser").innerText =
-  currentUser.name + " (" + currentUser.role + ")";
-document.getElementById("headerUser").innerText =
-  currentUser.email;
-
-// ====== GLOBAL ======
 let dashboardData = {};
-let currentPage = "home";
 
-// ====== LOAD JSON + LOADING ======
-fetch("./assets/data/dashboard.json")
-  .then(res => res.json())
-  .then(data => {
-    dashboardData = data;
+// ====== LOAD DATA ======
+async function loadData() {
+    try {
+        const response = await fetch('dashboard.json');
+        if (!response.ok) throw new Error("CORS or 404");
+        dashboardData = await response.json();
+    } catch (err) {
+        console.warn("Sử dụng dữ liệu dự phòng vì không thể load file JSON trực tiếp.");
+        dashboardData = fallbackData;
+    }
     init();
-  });
+}
 
-// ====== INIT ======
 function init() {
-  setupMenu();
-  loadPage();
+    setupMenu();
+    renderPage("home");
 }
 
-// ====== MENU CLICK ======
 function setupMenu() {
-  document.querySelectorAll("#menu li").forEach(li => {
-    li.onclick = () => {
-      window.location.hash = li.dataset.page;
-    };
-  });
+    document.querySelectorAll("#menu li").forEach(li => {
+        li.onclick = () => {
+            document.querySelectorAll("#menu li").forEach(i => i.classList.remove("active"));
+            li.classList.add("active");
+            renderPage(li.dataset.page);
+        };
+    });
 }
 
-// ====== ROUTING ======
-window.addEventListener("hashchange", loadPage);
+function renderPage(pageId) {
+    const data = dashboardData[pageId] || fallbackData.home;
+    const contentArea = document.getElementById("contentArea");
+    document.getElementById("pageTitle").innerText = data.title;
 
-function loadPage() {
-  const page = location.hash.replace("#", "") || "home";
-  currentPage = page;
-  renderPage(page);
+    let html = `<div class="card-container">`;
+    data.cards.forEach(card => {
+        html += `
+            <div class="card">
+                <h3>${card.value}</h3>
+                <p>${card.title}</p>
+                <small style="color: #64748b">${card.desc || card.description || ''}</small>
+            </div>`;
+    });
+    html += `</div>`;
+
+    if (data.chart) {
+        html += `<div class="chart-box"><canvas id="myChart"></canvas></div>`;
+    }
+
+    contentArea.innerHTML = html;
+
+    if (data.chart) {
+        createChart(data.chart);
+    }
 }
 
-// ====== RENDER PAGE ======
-function renderPage(page) {
-  const content = document.getElementById("contentArea");
-  const title = document.getElementById("pageTitle");
-
-  const pageData = dashboardData[page];
-  if (!pageData) return;
-
-  title.innerText = pageData.title;
-
-  // highlight sidebar
-  document.querySelectorAll("#menu li").forEach(li => {
-    li.classList.remove("active");
-    if (li.dataset.page === page) li.classList.add("active");
-  });
-
-  // ADMIN PAGE
-  if (page === "admin") {
-    renderUserTable();
-    return;
-  }
-
-  // render cards
-  let html = `<div class="card-container">`;
-  pageData.cards.forEach(c => {
-    html += `
-      <div class="card">
-        <h3>${c.value}</h3>
-        <p>${c.title}</p>
-        <small>${c.description}</small>
-      </div>
-    `;
-  });
-  html += `</div>`;
-
-  // render chart
-  if (pageData.chart) {
-    html += `<div class="chart-box"><canvas id="chart"></canvas></div>`;
-  }
-
-  content.innerHTML = html;
-
-  // ====== CHART ======
-  if (pageData.chart) {
-    const ctx = document.getElementById("chart");
-
-    const gradient = ctx.getContext("2d").createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,"rgba(96,165,250,0.4)");
-    gradient.addColorStop(1,"rgba(96,165,250,0)");
-
+function createChart(chartData) {
+    const ctx = document.getElementById('myChart').getContext('2d');
     new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: pageData.chart.labels,
-        datasets: [{
-          data: pageData.chart.data,
-          borderColor: "#60a5fa",
-          backgroundColor: gradient,
-          fill: true
-        }]
-      }
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Chỉ số tăng trưởng',
+                data: chartData.data,
+                borderColor: '#60a5fa',
+                backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { labels: { color: 'white' } } },
+            scales: {
+                y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+            }
+        }
     });
-  }
 }
 
-// ====== SEARCH ======
-document.getElementById("searchInput").addEventListener("input", function () {
-  const keyword = this.value.toLowerCase();
-  const pageData = dashboardData[currentPage];
-  const content = document.getElementById("contentArea");
-
-  let html = `<div class="card-container">`;
-  pageData.cards
-    .filter(c => c.title.toLowerCase().includes(keyword))
-    .forEach(c => {
-      html += `<div class="card"><h3>${c.value}</h3><p>${c.title}</p></div>`;
-    });
-  html += `</div>`;
-
-  content.innerHTML = html;
-});
-
-// ====== MODAL ======
-function openModal() {
-  document.getElementById("userModal").style.display = "block";
-}
-function closeModal() {
-  document.getElementById("userModal").style.display = "none";
-}
-
-// ====== CRUD USER ======
-function saveUser() {
-  const email = document.getElementById("newEmail").value;
-  const role = document.getElementById("newRole").value;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  users.push({ email, role });
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  closeModal();
-  renderUserTable();
-}
-
-function renderUserTable() {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const content = document.getElementById("contentArea");
-
-  let html = `<button onclick="openModal()">+ Add</button><table>`;
-  users.forEach(u => {
-    html += `<tr><td>${u.email}</td><td>${u.role}</td></tr>`;
-  });
-  html += `</table>`;
-
-  content.innerHTML = html;
-}
-
-// ====== LOGOUT ======
-function logout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "index.html";
-}
+// Khởi chạy
+loadData();
