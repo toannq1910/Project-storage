@@ -53,7 +53,10 @@ function renderPage(page) {
   const title = document.getElementById("pageTitle");
 
   const pageData = dashboardData[page];
-
+  if (page === "admin") {
+  renderUserTable();
+  return;
+  }
   if (!pageData) {
     content.innerHTML = "<p>Không có dữ liệu</p>";
     return;
@@ -134,6 +137,26 @@ function renderPage(page) {
 
   document.getElementById("contentArea").innerHTML = html;
 }
+}
+
+//Add / Delete function
+function addUser() {
+  const email = prompt("Nhập email:");
+  const role = prompt("Nhập role:");
+
+  if (!email || !role) return;
+
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push({ email, role });
+  localStorage.setItem("users", JSON.stringify(users));
+  renderUserTable();
+}
+
+function deleteUser(index) {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  users.splice(index, 1);
+  localStorage.setItem("users", JSON.stringify(users));
+  renderUserTable();
 }
 
 // Logout
