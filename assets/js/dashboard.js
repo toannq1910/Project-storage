@@ -4,40 +4,67 @@ if (!currentUser) {
   window.location.href = "index.html";
 }
 
+// Hiển thị user
 document.getElementById("sidebarUser").innerText =
   currentUser.name + " (" + currentUser.role + ")";
-
 document.getElementById("headerUser").innerText =
   currentUser.email;
 
 let dashboardData = {};
 
 // Load JSON
-fetch("assets/data/dashboard.json")
+fetch("./assets/data/dashboard.json")
   .then(res => res.json())
   .then(data => {
     dashboardData = data;
-    initRouting();
+    init();
+  })
+  .catch(err => {
+    console.error("Lỗi load JSON:", err);
   });
 
+// Khởi tạo
+function init() {
+  setupMenu();
+  loadPageFromHash();
+}
+
+// Click menu
+function setupMenu() {
+  document.querySelectorAll("#menu li").forEach(item => {
+    item.addEventListener("click", () => {
+      const page = item.getAttribute("data-page");
+      window.location.hash = page;
+    });
+  });
+}
+
+// Routing
+window.addEventListener("hashchange", loadPageFromHash);
+
+function loadPageFromHash() {
+  const page = window.location.hash.replace("#", "") || "home";
+  renderPage(page);
+}
+
+// Render nội dung
 function renderPage(page) {
   const content = document.getElementById("contentArea");
   const title = document.getElementById("pageTitle");
 
   const pageData = dashboardData[page];
-  if (!pageData) return;
 
-  // Check role nếu có giới hạn
-  if (pageData.roles && !pageData.roles.includes(currentUser.role)) {
-    content.innerHTML = "<p>Bạn không có quyền truy cập</p>";
+  if (!pageData) {
+    content.innerHTML = "<p>Không có dữ liệu</p>";
     return;
   }
 
   title.innerText = pageData.title;
-  content.innerHTML = "";
 
+  // Render cards
+  let html = "";
   pageData.cards.forEach(card => {
-    content.innerHTML += `
+    html += `
       <div class="card">
         <h3>${card.value}</h3>
         <p><strong>${card.title}</strong></p>
@@ -45,58 +72,41 @@ function renderPage(page) {
       </div>
     `;
   });
-  // Nếu có chart thì vẽ
-if (pageData.chart) {
-  content.innerHTML += `
-    <div style="width:600px;margin-top:40px;">
-      <canvas id="myChart"></canvas>
-    </div>
-  `;
 
-  setTimeout(() => {
-    const ctx = document.getElementById("myChart");
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: pageData.chart.labels,
-        datasets: [{
-          label: "Market Size (M$)",
-          data: pageData.chart.data,
-          borderColor: "#60a5fa",
-          backgroundColor: "rgba(96,165,250,0.2)",
-          tension: 0.4
-        }]
-      }
-    });
-  }, 100);
-}
-}
+  // Nếu có chart → thêm canvas
+  if (pageData.chart) {
+    html += `
+      <div style="width:600px;margin-top:40px;">
+        <canvas id="chart"></canvas>
+      </div>
+    `;
+  }
 
-function initRouting() {
-  document.querySelectorAll("#menu li").forEach(item => {
-    item.addEventListener("click", function () {
-      const page = this.getAttribute("data-page");
-      window.location.hash = page;
-    });
-  });
+  content.innerHTML = html;
 
-  window.addEventListener("hashchange", () => {
-    const page = window.location.hash.replace("#", "") || "home";
-    renderPage(page);
-  });
+  // Vẽ chart SAU khi render xong
+  if (pageData.chart) {
+    setTimeout(() => {
+      const ctx = document.getElementById("chart");
 
-  const initial = window.location.hash.replace("#", "") || "home";
-  renderPage(initial);
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: pageData.chart.labels,
+          datasets: [{
+            label: "Market Size (M$)",
+            data: pageData.chart.data,
+            borderColor: "#60a5fa",
+            backgroundColor: "rgba(96,165,250,0.2)",
+            tension: 0.4
+          }]
+        }
+      });
+    }, 50);
+  }
 }
 
-document.getElementById("searchInput").addEventListener("input", function () {
-  const keyword = this.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.display =
-      card.innerText.toLowerCase().includes(keyword) ? "block" : "none";
-  });
-});
-
+// Logout
 function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
