@@ -3,28 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>API Hub</title>
+  <title>API Hub Portal</title>
 
-  <!-- Future: login.css -->
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+
+  <style>
+    .landing {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .landing__title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .landing__desc {
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+
+    .landing__actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn--secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+  </style>
 </head>
-<body style="background:#0B1220;color:#E5E7EB;display:flex;align-items:center;justify-content:center;height:100vh;">
 
-  <div style="text-align:center">
-    <h1>API HUB</h1>
-    <p>Login page will be implemented here</p>
+<body>
+  <main class="landing">
+    <div class="landing__title">API HUB Portal</div>
 
-    <a href="dashboard.html" style="
-      display:inline-block;
-      margin-top:16px;
-      padding:10px 16px;
-      background:#3B82F6;
-      color:white;
-      border-radius:8px;
-      text-decoration:none;
-    ">
-      Go to Dashboard
-    </a>
-  </div>
+    <div class="landing__desc">
+      Enterprise API Marketplace cho UC / PBX / Voice / Messaging / AI.
+      Truy cập catalog, tích hợp nhanh và triển khai presales solution.
+    </div>
 
+    <div class="landing__actions">
+      <a href="dashboard.html">
+        <button class="btn">Vào Dashboard</button>
+      </a>
+      <button class="btn btn--secondary">Tài liệu</button>
+    </div>
+  </main>
 </body>
 </html>
