@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>API Hub</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 
@@ -10,24 +10,20 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar__top">
-    <span>API HUB</span>
-    <button id="toggleSidebar">☰</button>
+    API HUB
+    <button onclick="toggleSidebar()">☰</button>
   </div>
-
-  <button class="sidebar-item active">📡</button>
-  <button class="sidebar-item">📊</button>
-  <button class="sidebar-item">🔑</button>
 </aside>
 
 <div class="layout">
 
 <header class="topbar">
   <input id="searchInput" placeholder="Search API..." />
-
-  <div id="tagFilters" class="filters"></div>
+  <button onclick="generateKey()">Generate API Key</button>
 </header>
 
 <main>
+  <div id="apiKeyBox"></div>
   <div id="cardContainer" class="grid"></div>
 </main>
 
@@ -35,9 +31,11 @@
 
 <!-- Drawer -->
 <div id="drawer" class="drawer">
-  <div class="drawer__content" id="drawerContent"></div>
+  <div id="drawerContent"></div>
 </div>
 
+<script src="assets/js/mockApi.js"></script>
 <script src="assets/js/dashboard.js"></script>
+
 </body>
 </html>
