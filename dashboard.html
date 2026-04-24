@@ -1,51 +1,43 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>API Dashboard</title>
-
-  <link rel="stylesheet" href="assets/css/dashboard.css" />
+  <meta charset="UTF-8">
+  <title>API Hub</title>
+  <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar__brand">API HUB</div>
-
-    <nav class="sidebar__menu">
-      <button class="sidebar-item active">📡 API Catalog</button>
-      <button class="sidebar-item">📊 Analytics <span class="badge badge--cyan">NEW</span></button>
-      <button class="sidebar-item">🔑 API Keys</button>
-      <button class="sidebar-item">⚙️ Settings</button>
-    </nav>
-  </aside>
-
-  <!-- Layout -->
-  <div class="layout">
-
-    <!-- Topbar -->
-    <header class="topbar">
-      <h1>UC / PBX — API Services</h1>
-
-      <div class="topbar__actions">
-        <input id="searchInput" type="text" placeholder="Search API..." />
-        <select id="filterStatus">
-          <option value="">All Status</option>
-          <option value="Live">Live</option>
-          <option value="Beta">Beta</option>
-        </select>
-      </div>
-    </header>
-
-    <!-- Content -->
-    <main class="main">
-      <section id="cardContainer" class="grid"></section>
-    </main>
-
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__top">
+    <span>API HUB</span>
+    <button id="toggleSidebar">☰</button>
   </div>
 
-  <script src="assets/js/dashboard.js"></script>
+  <button class="sidebar-item active">📡</button>
+  <button class="sidebar-item">📊</button>
+  <button class="sidebar-item">🔑</button>
+</aside>
+
+<div class="layout">
+
+<header class="topbar">
+  <input id="searchInput" placeholder="Search API..." />
+
+  <div id="tagFilters" class="filters"></div>
+</header>
+
+<main>
+  <div id="cardContainer" class="grid"></div>
+</main>
+
+</div>
+
+<!-- Drawer -->
+<div id="drawer" class="drawer">
+  <div class="drawer__content" id="drawerContent"></div>
+</div>
+
+<script src="assets/js/dashboard.js"></script>
 </body>
 </html>
