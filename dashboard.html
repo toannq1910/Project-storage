@@ -1,77 +1,48 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>API Dashboard</title>
 
-  <link rel="stylesheet" href="assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
 </head>
 
 <body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__brand">API HUB</div>
+
+    <nav class="sidebar__menu">
+      <button class="sidebar-item active">📡 API Catalog</button>
+      <button class="sidebar-item">📊 Analytics <span class="badge badge--cyan">NEW</span></button>
+      <button class="sidebar-item">🔑 API Keys</button>
+      <button class="sidebar-item">⚙️ Settings</button>
+    </nav>
+  </aside>
+
+  <!-- Layout -->
   <div class="layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar__logo">API HUB</div>
+    <!-- Topbar -->
+    <header class="topbar">
+      <h1>UC / PBX — API Services</h1>
 
-      <nav class="sidebar__menu">
+      <div class="topbar__actions">
+        <input id="searchInput" type="text" placeholder="Search API..." />
+        <select id="filterStatus">
+          <option value="">All Status</option>
+          <option value="Live">Live</option>
+          <option value="Beta">Beta</option>
+        </select>
+      </div>
+    </header>
 
-        <div class="sidebar-item active">
-          <span>🏠</span>
-          <span>Dashboard</span>
-        </div>
-
-        <div class="sidebar-item">
-          <span>📡</span>
-          <span>API Services</span>
-          <span class="badge badge--blue">API</span>
-        </div>
-
-        <div class="sidebar-item">
-          <span>🔗</span>
-          <span>Integrations</span>
-        </div>
-
-        <div class="sidebar-item">
-          <span>📄</span>
-          <span>Docs</span>
-        </div>
-
-      </nav>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main">
-
-      <!-- TOPBAR -->
-      <header class="topbar">
-        <div class="topbar__left">
-          <h1>UC / PBX — API Marketplace</h1>
-        </div>
-
-        <div class="topbar__right">
-
-          <input 
-            id="searchInput"
-            type="text"
-            placeholder="Search API..."
-            aria-label="Search API"
-          />
-
-          <button id="toggleSidebar" class="btn-ghost">☰</button>
-
-        </div>
-      </header>
-
-      <!-- CONTENT -->
-      <main class="content">
-
-        <section class="card-grid" id="cardContainer"></section>
-
-      </main>
-
-    </div>
+    <!-- Content -->
+    <main class="main">
+      <section id="cardContainer" class="grid"></section>
+    </main>
 
   </div>
 
