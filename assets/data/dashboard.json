@@ -1,49 +1,60 @@
-{
-  "home": {
-    "title": "Dashboard Tổng Quan",
-    "cards": [
-      {
-        "title": "API Platforms",
-        "value": "36+",
-        "description": "Tổng số API tích hợp"
-      },
-      {
-        "title": "CRM/ERP Providers",
-        "value": "12+",
-        "description": "Đối tác tích hợp"
-      },
-      {
-        "title": "CRM Market VN",
-        "value": "320M$",
-        "description": "Quy mô thị trường"
-      }
-    ]
-  },
-
-  "market": {
-    "title": "Thị Trường Việt Nam",
-    "cards": [
-      {
-        "title": "Tăng trưởng CRM",
-        "value": "18%",
-        "description": "YoY Growth 2025"
-      }
+[
+  {
+    "id": 1,
+    "vendor": "FPT",
+    "productName": "Cloud PBX API",
+    "category": "UC",
+    "description": "Enterprise cloud PBX control API.",
+    "endpoints": [
+      { "method": "POST", "path": "/calls" },
+      { "method": "GET", "path": "/extensions" },
+      { "method": "POST", "path": "/webhooks" }
     ],
-    "chart": {
-      "labels": ["2021", "2022", "2023", "2024", "2025"],
-      "data": [120, 150, 210, 260, 320]
-    }
+    "docsUrl": "#"
   },
-
-  "admin": {
-    "title": "Quản Trị Hệ Thống",
-    "roles": ["Administrator"],
-    "cards": [
-      {
-        "title": "User Management",
-        "value": "",
-        "description": "Quản lý người dùng"
-      }
-    ]
+  {
+    "id": 2,
+    "vendor": "Cisco",
+    "productName": "CUCM API",
+    "category": "Voice",
+    "description": "Cisco call manager integration APIs.",
+    "endpoints": [
+      { "method": "GET", "path": "/devices" },
+      { "method": "POST", "path": "/lines" }
+    ],
+    "docsUrl": "#"
+  },
+  {
+    "id": 3,
+    "vendor": "Twilio",
+    "productName": "Voice API",
+    "category": "Voice",
+    "description": "Programmable voice APIs.",
+    "endpoints": [
+      { "method": "POST", "path": "/calls" }
+    ],
+    "docsUrl": "#"
+  },
+  {
+    "id": 4,
+    "vendor": "AWS",
+    "productName": "Chime SDK",
+    "category": "Video",
+    "description": "Video meeting APIs.",
+    "endpoints": [
+      { "method": "POST", "path": "/meetings" }
+    ],
+    "docsUrl": "#"
+  },
+  {
+    "id": 5,
+    "vendor": "Google",
+    "productName": "Dialogflow",
+    "category": "AI",
+    "description": "Conversational AI APIs.",
+    "endpoints": [
+      { "method": "POST", "path": "/detectIntent" }
+    ],
+    "docsUrl": "#"
   }
-}
+]
