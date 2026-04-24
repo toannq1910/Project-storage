@@ -1,44 +1,28 @@
-/* Sidebar collapse */
-.sidebar.collapsed {
-  width: 70px;
+/* center login */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-/* Drawer */
+/* login */
+.login-card {
+  padding: 20px;
+  width: 300px;
+}
+
+/* drawer */
 .drawer {
   position: fixed;
+  right: -400px;
   top: 0;
-  right: -500px;
-  width: 420px;
+  width: 400px;
   height: 100%;
   background: #111827;
-  border-left: 1px solid #263148;
   transition: 0.3s;
 }
 
 .drawer.open {
   right: 0;
-}
-
-/* Skeleton */
-.skeleton {
-  height: 160px;
-  background: linear-gradient(
-    90deg,
-    #1b2335 25%,
-    #263148 50%,
-    #1b2335 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0 }
-  100% { background-position: -200% 0 }
-}
-
-/* Highlight */
-mark {
-  background: #3B82F6;
-  color: white;
 }
