@@ -1,102 +1,172 @@
-body {
+:root {
+  --bg: #0B1220;
+  --sidebar: #0F172A;
+  --card: #151C2B;
+  --border: #263148;
+
+  --text-primary: #E5E7EB;
+  --text-secondary: #94A3B8;
+
+  --blue: #3B82F6;
+  --cyan: #22D3EE;
+  --green: #10B981;
+  --yellow: #F59E0B;
+
+  --radius: 14px;
+  --transition: 0.18s ease;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #0f172a, #020617);
+  padding: 0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 270px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  transition: var(--transition);
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar__logo {
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+/* MENU */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.sidebar-item:hover,
+.sidebar-item.active {
+  background: #1B2335;
   color: white;
 }
 
-.layout {
-  display: flex;
-}
-
-.sidebar {
-  width: 220px;
-  background: #020617;
-  padding: 20px;
-}
-
-#menu li {
-  list-style: none;
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  gap: 10px;
-}
-
-#menu li:hover {
-  background: rgba(96,165,250,0.1);
-}
-
-#menu li.active {
-  background: rgba(96,165,250,0.2);
-  border-left: 3px solid #60a5fa;
-}
-
-.main {
-  flex: 1;
-  padding: 20px;
-}
-
+/* TOPBAR */
 .topbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
 }
 
-.card-container {
-  display: flex;
-  gap: 20px;
-}
-
-.card {
-  background: linear-gradient(145deg, #1e293b, #0f172a);
-  padding: 20px;
-  border-radius: 12px;
-  width: 200px;
-}
-
-.card:hover {
-  box-shadow: 0 0 20px rgba(96,165,250,0.5);
-}
-
-.chart-box {
-  margin-top: 40px;
-  width: 700px;
-}
-
-button {
-  background: linear-gradient(90deg,#60a5fa,#6366f1);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
+.topbar input {
+  background: #111827;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 10px;
   color: white;
 }
 
-/* MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+/* BUTTON */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.modal-content {
-  background: #1e293b;
-  padding: 20px;
-  width: 300px;
-  margin: 100px auto;
+/* CONTENT */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* LOADING */
-.skeleton {
-  height: 100px;
-  margin: 10px 0;
-  background: linear-gradient(90deg,#1e293b,#334155,#1e293b);
-  animation: shimmer 1.5s infinite;
+.content {
+  padding: 24px;
 }
 
-@keyframes shimmer {
-  0% { background-position:-200% 0 }
-  100% { background-position:200% 0 }
+/* GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+}
+
+/* TITLE */
+.card__title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* DESC */
+.card__desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ENDPOINT */
+.endpoint {
+  font-family: monospace;
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.method.GET { color: var(--cyan); }
+.method.POST { color: var(--green); }
+.method.PUT { color: var(--yellow); }
+
+/* FOOTER */
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* BADGE */
+.badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.badge--blue {
+  background: rgba(59,130,246,0.2);
+  color: var(--blue);
 }
