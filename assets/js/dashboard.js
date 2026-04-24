@@ -1,168 +1,61 @@
-// ====== AUTH CHECK ======
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-if (!currentUser) window.location.href = "index.html";
+const container = document.getElementById("cardContainer");
+const searchInput = document.getElementById("searchInput");
+const toggleBtn = document.getElementById("toggleSidebar");
+const sidebar = document.querySelector(".sidebar");
 
-// ====== HIỂN THỊ USER ======
-document.getElementById("sidebarUser").innerText =
-  currentUser.name + " (" + currentUser.role + ")";
-document.getElementById("headerUser").innerText =
-  currentUser.email;
+let services = [];
 
-// ====== GLOBAL ======
-let dashboardData = {};
-let currentPage = "home";
-
-// ====== LOAD JSON + LOADING ======
-fetch("./assets/data/dashboard.json")
-  .then(res => res.json())
-  .then(data => {
-    dashboardData = data;
-    init();
-  });
-
-// ====== INIT ======
-function init() {
-  setupMenu();
-  loadPage();
+/* LOAD DATA */
+async function loadData() {
+  const res = await fetch("assets/data/dashboard.json");
+  services = await res.json();
+  render(services);
 }
 
-// ====== MENU CLICK ======
-function setupMenu() {
-  document.querySelectorAll("#menu li").forEach(li => {
-    li.onclick = () => {
-      window.location.hash = li.dataset.page;
-    };
-  });
-}
+/* RENDER */
+function render(data) {
+  container.innerHTML = "";
 
-// ====== ROUTING ======
-window.addEventListener("hashchange", loadPage);
+  data.forEach(s => {
+    const el = document.createElement("article");
+    el.className = "card";
 
-function loadPage() {
-  const page = location.hash.replace("#", "") || "home";
-  currentPage = page;
-  renderPage(page);
-}
+    el.innerHTML = `
+      <div class="card__title">${s.productName}</div>
+      <div class="card__desc">${s.description}</div>
 
-// ====== RENDER PAGE ======
-function renderPage(page) {
-  const content = document.getElementById("contentArea");
-  const title = document.getElementById("pageTitle");
+      ${s.endpoints.slice(0,3).map(ep => `
+        <div class="endpoint">
+          <span class="method ${ep.method}">${ep.method}</span>
+          <span>${ep.path}</span>
+        </div>
+      `).join("")}
 
-  const pageData = dashboardData[page];
-  if (!pageData) return;
-
-  title.innerText = pageData.title;
-
-  // highlight sidebar
-  document.querySelectorAll("#menu li").forEach(li => {
-    li.classList.remove("active");
-    if (li.dataset.page === page) li.classList.add("active");
-  });
-
-  // ADMIN PAGE
-  if (page === "admin") {
-    renderUserTable();
-    return;
-  }
-
-  // render cards
-  let html = `<div class="card-container">`;
-  pageData.cards.forEach(c => {
-    html += `
-      <div class="card">
-        <h3>${c.value}</h3>
-        <p>${c.title}</p>
-        <small>${c.description}</small>
+      <div class="card__footer">
+        <a href="${s.docsUrl}">Docs</a>
+        <button>Chi tiết</button>
       </div>
     `;
+
+    container.appendChild(el);
   });
-  html += `</div>`;
-
-  // render chart
-  if (pageData.chart) {
-    html += `<div class="chart-box"><canvas id="chart"></canvas></div>`;
-  }
-
-  content.innerHTML = html;
-
-  // ====== CHART ======
-  if (pageData.chart) {
-    const ctx = document.getElementById("chart");
-
-    const gradient = ctx.getContext("2d").createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,"rgba(96,165,250,0.4)");
-    gradient.addColorStop(1,"rgba(96,165,250,0)");
-
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: pageData.chart.labels,
-        datasets: [{
-          data: pageData.chart.data,
-          borderColor: "#60a5fa",
-          backgroundColor: gradient,
-          fill: true
-        }]
-      }
-    });
-  }
 }
 
-// ====== SEARCH ======
-document.getElementById("searchInput").addEventListener("input", function () {
-  const keyword = this.value.toLowerCase();
-  const pageData = dashboardData[currentPage];
-  const content = document.getElementById("contentArea");
+/* SEARCH */
+searchInput.addEventListener("input", e => {
+  const key = e.target.value.toLowerCase();
 
-  let html = `<div class="card-container">`;
-  pageData.cards
-    .filter(c => c.title.toLowerCase().includes(keyword))
-    .forEach(c => {
-      html += `<div class="card"><h3>${c.value}</h3><p>${c.title}</p></div>`;
-    });
-  html += `</div>`;
+  const filtered = services.filter(s =>
+    s.productName.toLowerCase().includes(key) ||
+    s.vendor.toLowerCase().includes(key)
+  );
 
-  content.innerHTML = html;
+  render(filtered);
 });
 
-// ====== MODAL ======
-function openModal() {
-  document.getElementById("userModal").style.display = "block";
-}
-function closeModal() {
-  document.getElementById("userModal").style.display = "none";
-}
+/* SIDEBAR TOGGLE */
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("collapsed");
+});
 
-// ====== CRUD USER ======
-function saveUser() {
-  const email = document.getElementById("newEmail").value;
-  const role = document.getElementById("newRole").value;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  users.push({ email, role });
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  closeModal();
-  renderUserTable();
-}
-
-function renderUserTable() {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const content = document.getElementById("contentArea");
-
-  let html = `<button onclick="openModal()">+ Add</button><table>`;
-  users.forEach(u => {
-    html += `<tr><td>${u.email}</td><td>${u.role}</td></tr>`;
-  });
-  html += `</table>`;
-
-  content.innerHTML = html;
-}
-
-// ====== LOGOUT ======
-function logout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "index.html";
-}
+loadData();
