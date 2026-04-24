@@ -1,27 +1,72 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>API Hub Portal</title>
+
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+
+  <style>
+    /* Page-specific minimal override */
+    .landing {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .landing__title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .landing__desc {
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      max-width: 480px;
+    }
+
+    .landing__actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn--secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+  </style>
 </head>
 
-<body class="center">
+<body>
+  <main class="landing">
 
-<div class="card login-card">
-  <h2>API Hub Login</h2>
+    <!-- Brand -->
+    <div class="landing__title">
+      API HUB Portal
+    </div>
 
-  <input id="username" placeholder="Username" />
-  <button onclick="login()">Login</button>
-</div>
+    <div class="landing__desc">
+      Enterprise API Marketplace cho UC, PBX, Voice, Messaging và AI services.  
+      Truy cập catalog dịch vụ, tích hợp nhanh, và triển khai solution presales.
+    </div>
 
-<script>
-function login() {
-  const username = document.getElementById("username").value;
-  localStorage.setItem("user", username || "demo");
-  window.location.href = "dashboard.html";
-}
-</script>
+    <!-- Actions -->
+    <div class="landing__actions">
+      <a href="dashboard.html">
+        <button class="btn">Vào Dashboard</button>
+      </a>
 
+      <button class="btn btn--secondary">
+        Tài liệu
+      </button>
+    </div>
+
+  </main>
 </body>
 </html>
