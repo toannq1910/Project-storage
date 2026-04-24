@@ -1,61 +1,68 @@
 const container = document.getElementById("cardContainer");
 const searchInput = document.getElementById("searchInput");
-const toggleBtn = document.getElementById("toggleSidebar");
-const sidebar = document.querySelector(".sidebar");
+const filterStatus = document.getElementById("filterStatus");
 
 let services = [];
 
-/* LOAD DATA */
 async function loadData() {
   const res = await fetch("assets/data/dashboard.json");
   services = await res.json();
   render(services);
 }
 
-/* RENDER */
 function render(data) {
   container.innerHTML = "";
 
   data.forEach(s => {
-    const el = document.createElement("article");
-    el.className = "card";
+    const card = document.createElement("article");
+    card.className = "card";
 
-    el.innerHTML = `
-      <div class="card__title">${s.productName}</div>
+    card.innerHTML = `
+      <div class="card__header">
+        <div>
+          <div class="card__title">${s.productName}</div>
+          <div class="badge badge--cyan">${s.category}</div>
+        </div>
+        <div class="badge badge--green">${s.status}</div>
+      </div>
+
       <div class="card__desc">${s.description}</div>
 
-      ${s.endpoints.slice(0,3).map(ep => `
-        <div class="endpoint">
-          <span class="method ${ep.method}">${ep.method}</span>
-          <span>${ep.path}</span>
-        </div>
-      `).join("")}
+      <div>
+        ${s.endpoints.slice(0,4).map(ep => `
+          <div class="endpoint">
+            <span class="method">${ep.method}</span>
+            ${ep.path}
+          </div>
+        `).join("")}
+      </div>
 
       <div class="card__footer">
-        <a href="${s.docsUrl}">Docs</a>
-        <button>Chi tiết</button>
+        <a href="${s.docsUrl}" target="_blank">Docs</a>
+        <button class="btn">Chi tiết</button>
       </div>
     `;
 
-    container.appendChild(el);
+    container.appendChild(card);
   });
 }
 
-/* SEARCH */
-searchInput.addEventListener("input", e => {
-  const key = e.target.value.toLowerCase();
+function applyFilter() {
+  const keyword = searchInput.value.toLowerCase();
+  const status = filterStatus.value;
 
-  const filtered = services.filter(s =>
-    s.productName.toLowerCase().includes(key) ||
-    s.vendor.toLowerCase().includes(key)
-  );
+  const filtered = services.filter(s => {
+    return (
+      (s.productName.toLowerCase().includes(keyword) ||
+       s.vendor.toLowerCase().includes(keyword)) &&
+      (!status || s.status === status)
+    );
+  });
 
   render(filtered);
-});
+}
 
-/* SIDEBAR TOGGLE */
-toggleBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("collapsed");
-});
+searchInput.addEventListener("input", applyFilter);
+filterStatus.addEventListener("change", applyFilter);
 
 loadData();
