@@ -3,58 +3,109 @@
     "id": 1,
     "vendor": "FPT",
     "productName": "Cloud PBX API",
-    "category": "UC",
-    "description": "Enterprise cloud PBX control API.",
+    "category": "Voice",
+    "status": "Live",
+    "description": "Enterprise cloud PBX API for SIP calling and call control.",
     "endpoints": [
       { "method": "POST", "path": "/calls" },
       { "method": "GET", "path": "/extensions" },
       { "method": "POST", "path": "/webhooks" }
     ],
-    "docsUrl": "#"
+    "docsUrl": "#",
+    "detailUrl": "#"
   },
   {
     "id": 2,
-    "vendor": "Cisco",
-    "productName": "CUCM API",
-    "category": "Voice",
-    "description": "Cisco call manager integration APIs.",
+    "vendor": "Viettel",
+    "productName": "SMS Gateway API",
+    "category": "Messaging",
+    "status": "Live",
+    "description": "Send OTP and bulk SMS via REST API.",
     "endpoints": [
-      { "method": "GET", "path": "/devices" },
-      { "method": "POST", "path": "/lines" }
+      { "method": "POST", "path": "/sms/send" },
+      { "method": "GET", "path": "/sms/status" }
     ],
-    "docsUrl": "#"
+    "docsUrl": "#",
+    "detailUrl": "#"
   },
   {
     "id": 3,
-    "vendor": "Twilio",
-    "productName": "Voice API",
-    "category": "Voice",
-    "description": "Programmable voice APIs.",
+    "vendor": "VNPT",
+    "productName": "Voice Bot API",
+    "category": "AI",
+    "status": "Beta",
+    "description": "AI voice bot with speech recognition.",
     "endpoints": [
-      { "method": "POST", "path": "/calls" }
+      { "method": "POST", "path": "/bot/call" },
+      { "method": "GET", "path": "/bot/logs" }
     ],
-    "docsUrl": "#"
+    "docsUrl": "#",
+    "detailUrl": "#"
   },
   {
     "id": 4,
-    "vendor": "AWS",
-    "productName": "Chime SDK",
-    "category": "Video",
-    "description": "Video meeting APIs.",
+    "vendor": "Twilio",
+    "productName": "Programmable Voice",
+    "category": "Voice",
+    "status": "Live",
+    "description": "Global voice calling API platform.",
     "endpoints": [
-      { "method": "POST", "path": "/meetings" }
+      { "method": "POST", "path": "/calls" },
+      { "method": "GET", "path": "/calls/{id}" }
     ],
-    "docsUrl": "#"
+    "docsUrl": "#",
+    "detailUrl": "#"
   },
   {
     "id": 5,
-    "vendor": "Google",
-    "productName": "Dialogflow",
-    "category": "AI",
-    "description": "Conversational AI APIs.",
+    "vendor": "AWS",
+    "productName": "Chime SDK",
+    "category": "Voice",
+    "status": "Live",
+    "description": "Real-time communication SDK.",
     "endpoints": [
-      { "method": "POST", "path": "/detectIntent" }
+      { "method": "POST", "path": "/meetings" }
     ],
-    "docsUrl": "#"
+    "docsUrl": "#",
+    "detailUrl": "#"
+  },
+  {
+    "id": 6,
+    "vendor": "Google",
+    "productName": "Speech-to-Text API",
+    "category": "AI",
+    "status": "Live",
+    "description": "Convert speech into text.",
+    "endpoints": [
+      { "method": "POST", "path": "/speech:recognize" }
+    ],
+    "docsUrl": "#",
+    "detailUrl": "#"
+  },
+  {
+    "id": 7,
+    "vendor": "Meta",
+    "productName": "WhatsApp API",
+    "category": "Messaging",
+    "status": "Live",
+    "description": "WhatsApp messaging API.",
+    "endpoints": [
+      { "method": "POST", "path": "/messages" }
+    ],
+    "docsUrl": "#",
+    "detailUrl": "#"
+  },
+  {
+    "id": 8,
+    "vendor": "Cisco",
+    "productName": "Webex Calling API",
+    "category": "Voice",
+    "status": "Beta",
+    "description": "Enterprise calling platform API.",
+    "endpoints": [
+      { "method": "GET", "path": "/people" }
+    ],
+    "docsUrl": "#",
+    "detailUrl": "#"
   }
 ]
